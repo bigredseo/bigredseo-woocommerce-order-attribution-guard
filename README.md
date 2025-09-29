@@ -1,76 +1,52 @@
-# Big Red SEO - WooCommerce Order Attribution Guard
+# Big Red SEO – WooCommerce Order Attribution Guard
 
-A lightweight security plugin for WooCommerce that ensures every order includes **Order Attribution** details (Origin & Device).  
+Blocks checkout unless **Woo Order Attribution** contains both **Origin** and **Device**. Prevents spam/invalid orders reaching WooCommerce by gating Store API (Checkout block), PayPal Payments AJAX routes, and classic checkout.
 
-This helps prevent fake or automated orders placed through direct API calls or checkout bypasses.
+- **Author:** Big Red SEO  
+- **GitHub:** https://github.com/bigredseo/bigredseo-woocommerce-order-attribution-guard  
+- **License:** GPL-3.0-or-later
 
----
+## Why this exists
+Recent bot activity can hit checkout endpoints directly, bypassing normal flows. This plugin forces valid Woo Order Attribution data to be present before orders can proceed.
 
-## Features
-- ✅ Blocks checkout if **Origin** or **Device Type** is missing  
-- ✅ Works with:
-  - Store API (`/wc/store/v1/checkout`)  
-  - PayPal Payments express flows (`ppc-create-order`, `ppc-approve-order`)  
-  - Classic checkout (`woocommerce_checkout_create_order`)  
-- ✅ Adds order notes when an order is blocked  
-- ✅ Logs **pass/fail attempts** (IP, URI, User Agent) in a browser-accessible log file  
-- ✅ Admin bypass option for testing  
+## Key features
+- Gates:
+  - Store API checkout: `/wp-json/wc/store/v1/checkout`
+  - PayPal Payments AJAX routes: `ppc-create-order`, `ppc-approve-order`
+  - Classic checkout fallback
+- Lightweight, no settings required (sane defaults)
+- Extensible via filters
 
----
+## Requirements
+- WordPress 6.0+
+- WooCommerce 7.0+
+- Woo Order Attribution enabled (Woo → Settings → Advanced → Features)
 
 ## Installation
-1. Download or clone this repository into your WordPress plugins directory:
+1. Upload the folder `bigredseo-woocommerce-order-attribution-guard/` to `/wp-content/plugins/`
+2. Activate **Big Red SEO – WooCommerce Order Attribution Guard** in **Plugins**
+3. Ensure **Woo Order Attribution** is enabled in Woo settings
 
-   ```bash
-   git clone https://github.com/bigredseo/woocommerce-order-attribution-guard.git wp-content/plugins/bigredseo-woocommerce-order-attribution-guard
-   ```
+## How it works (TL;DR)
+On checkout requests, the plugin verifies presence of **Origin** and **Device** in Woo Order Attribution payload/cookies. If missing/invalid, it blocks progression and returns a friendly error.
 
-2. Activate **WooCommerce Order Attribution Guard** in **WordPress Admin → Plugins**.
+## Filters
+```php
+/**
+ * Allow custom logic to decide whether checkout should be blocked.
+ * @param bool  $block    Default decision from core checks
+ * @param array $context  Request context (route, attribution data, user, etc.)
+ */
+apply_filters('brseo_wag_should_block_checkout', $block, $context);
+```
 
-3. Make sure **WooCommerce → Settings → Advanced → Order attribution** is enabled.
+## Roadmap
+- Optional logging screen in wp-admin
+- Admin notice if Woo Order Attribution is disabled
+- Per-gateway toggles
 
----
+## Support
+Issues and feature requests: open a GitHub Issue.
 
-## Logging
-- Logs are stored in:
-
-  ```
-  wp-content/uploads/brs-logs/attrib-check.log
-  ```
-
-- Accessible in a browser:
-
-  ```
-  https://yourdomain.com/wp-content/uploads/brs-logs/attrib-check.log
-  ```
-
-- Each line shows:
-  ```
-  [2025-09-29T12:34:56+00:00] store_api_checkout ok=0 ip=41.114.57.77 uri=/wc/store/v1/checkout | Mozilla/5.0 ...
-  ```
-
-Where:
-- `ok=1` → attribution passed (order allowed)  
-- `ok=0` → attribution failed (order blocked)  
-
----
-
-## Configuration
-- **Admins** can bypass the check for testing (toggle in code).  
-- Log folder defaults to `/wp-content/uploads/brs-logs/`.  
-- To secure logs, restrict access via `.htaccess` or move the path.  
-
----
-
-## Contributing
-Pull requests are welcome! Please fork the repo and submit improvements.
-
----
-
-## 📄 License
-This plugin is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
-
----
-
-## Credits
-Developed by [Big Red SEO](https://www.bigredseo.com).  
+## License
+GPL-3.0-or-later — see `license.txt`.
