@@ -22,7 +22,7 @@ This helps prevent fake or automated orders placed through direct API calls or c
 1. Download or clone this repository into your WordPress plugins directory:
 
    ```bash
-   git clone https://github.com/YOURUSERNAME/woocommerce-order-attribution-guard.git wp-content/plugins/woocommerce-order-attribution-guard
+   git clone https://github.com/bigredseo/woocommerce-order-attribution-guard.git wp-content/plugins/woocommerce-order-attribution-guard
    ```
 
 2. Activate **WooCommerce Order Attribution Guard** in **WordPress Admin → Plugins**.
