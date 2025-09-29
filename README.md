@@ -9,13 +9,20 @@ Blocks checkout unless **Woo Order Attribution** contains both **Origin** and **
 ## Why this exists
 Recent bot activity can hit checkout endpoints directly, bypassing normal flows. This plugin forces valid Woo Order Attribution data to be present before orders can proceed.
 
-## Key features
-- Gates:
-  - Store API checkout: `/wp-json/wc/store/v1/checkout`
-  - PayPal Payments AJAX routes: `ppc-create-order`, `ppc-approve-order`
-  - Classic checkout fallback
+## Extended info on why this plugin was created
+The makers of the plugin "WooCommerce PayPal Payments" faild to issue an update to their plugin to stop the Card Testing Attacks. While other members chimed in to assist others and offer code regarding disable_wc_endpoint and ppc-create-order, no official fix was released and instead, thread comments were all archived by a moderator and the response from the folks at https://wordpress.org/plugins/woocommerce-paypal-payments/ was initially suggested to just disable the plugin until they had a fix, disable guest checkout, or activate 3DS which puts another layer of security by sending purchase codes via mobile etc. None of which are viable solutions. 
+
+## Features
+- Blocks checkout if **Origin** or **Device Type** is missing  
+- Works with:
+  - Store API (`/wc/store/v1/checkout`)  
+  - PayPal Payments express flows (`ppc-create-order`, `ppc-approve-order`)  
+  - Classic checkout (`woocommerce_checkout_create_order`) 
 - Lightweight, no settings required (sane defaults)
-- Extensible via filters
+- Extensible via filters   
+- Adds order notes when an order is blocked  
+- Logs **pass/fail attempts** (IP, URI, User Agent) in a browser-accessible log file  
+- Admin bypass option for testing 
 
 ## Requirements
 - WordPress 6.0+
