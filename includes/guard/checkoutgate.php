@@ -128,6 +128,31 @@ class CheckoutGate {
         $data    = Attribution::current();
         $missing = (empty($data['origin']) || empty($data['device']));
 
+        // --- Logging: record every attempt before evaluating the filter ---
+        // Try to grab basic user + ip context safely.
+        $ip         = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        $user_login = '';
+        $email      = '';
+        if ( is_user_logged_in() ) {
+            $u = wp_get_current_user();
+            if ( $u && $u->exists() ) {
+                $user_login = $u->user_login;
+                $email      = $u->user_email;
+            }
+        }
+        // Log the attempt (will appear in JSONL + WC logs if logger is loaded).
+        if ( function_exists('\\brseo_wag_logger') ) {
+            \brseo_wag_logger()->log([
+                'action'              => 'attempt',
+                'ip'                  => $ip,
+                'user_login'          => $user_login,
+                'email'               => $email,
+                'attribution_origin'  => $data['origin'] ?? '',
+                'attribution_device'  => $data['device'] ?? '',
+                'note'                => $route,
+            ]);
+        }
+
         /**
          * Filter: allow site owners to override blocking conditions or log diagnostics.
          * @param bool  $missing Default decision (true = block).
@@ -138,6 +163,19 @@ class CheckoutGate {
             'attr'  => $data,
             'user'  => get_current_user_id(),
         ]);
+
+        // If we are blocking, log the blocked event with context.
+        if ( $block && function_exists('\\brseo_wag_logger') ) {
+            \brseo_wag_logger()->log([
+                'action'              => 'blocked',
+                'ip'                  => $ip,
+                'user_login'          => $user_login,
+                'email'               => $email,
+                'attribution_origin'  => $data['origin'] ?? '',
+                'attribution_device'  => $data['device'] ?? '',
+                'note'                => 'missing origin/device · ' . $route,
+            ]);
+        }
 
         return $block;
     }

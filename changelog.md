@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.4
+- Added logging system:
+  - Records all checkout attempts, blocked checkouts, and successful orders.
+  - Logs stored as JSONL file in `wp-content/uploads/bigredseo-wag/events.jsonl`.
+  - Mirror logs into WooCommerce > Status > Logs for easy admin access.
+- Introduced “WAG Logs” admin page under WooCommerce menu showing stats and recent activity.
+- Improved visibility into blocked checkouts (IP, username/email, attribution origin/device, cart total).
+
+
 ## [1.0.3] – 2025-09-29
 ### Fixed 
 - Store API checkout flow no longer leaves behind silent **Draft** orders when attribution is missing.

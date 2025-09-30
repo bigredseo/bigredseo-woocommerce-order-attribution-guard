@@ -49,11 +49,9 @@ apply_filters('brseo_wag_should_block_checkout', $block, $context);
 
 ## Roadmap
 - Optional logging screen in wp-admin
-- Admin notice if Woo Order Attribution is disabled
-- Per-gateway toggles
 
 ## Support
 Issues and feature requests: open a GitHub Issue.
 
 ## License
-GPL-3.0-or-later — see `license.txt`.
+GPL-3.0-or-later
