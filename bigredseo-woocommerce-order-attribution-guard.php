@@ -3,7 +3,7 @@
  * Plugin Name: Big Red SEO – WooCommerce Order Attribution Guard
  * Plugin URI:  https://github.com/bigredseo/bigredseo-woocommerce-order-attribution-guard
  * Description: Blocks checkout unless Woo Order Attribution contains both Origin & Device. Protects WooCommerce from spam/invalid orders across Store API, PayPal Payments AJAX, and classic checkout.
- * Version:     1.0.2
+ * Version:     1.0.3
  * Author:      Big Red SEO
  * Author URI:  https://www.bigredseo.com
  * License:     GPL-3.0-or-later
@@ -12,7 +12,7 @@
 
 defined('ABSPATH') || exit;
 
-define('BRSEO_WAG_VERSION', '1.0.2');
+define('BRSEO_WAG_VERSION', '1.0.3');
 define('BRSEO_WAG_PATH', plugin_dir_path(__FILE__));
 define('BRSEO_WAG_URL',  plugin_dir_url(__FILE__));
 
