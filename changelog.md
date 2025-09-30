@@ -1,7 +1,7 @@
 # Changelog
 
 ## [1.0.3] – 2025-09-29
-### Fixed
+### Fixed 
 - Store API checkout flow no longer leaves behind silent **Draft** orders when attribution is missing.
 - Added proper **order notes** and auto-**Cancelled** status when a draft order does slip through.
 
